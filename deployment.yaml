@@ -2,7 +2,6 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: helloapp
-  namespace: helloapp-alimurat-dev
   labels:
     app: helloapp
 spec:
@@ -29,7 +28,6 @@ kind: Service
 apiVersion: v1
 metadata:
   name: helloapp
-  namespace: helloapp-alimurat-dev
   labels:
     app: helloapp
 spec:
@@ -43,16 +41,13 @@ spec:
   type: ClusterIP
 
 ---
-
 kind: Route
 apiVersion: route.openshift.io/v1
 metadata:
   name: helloapp
-  namespace: helloapp-alimurat-dev
   labels:
     app: helloapp
 spec:
-  host: helloapp-helloapp-alimurat-dev.apps.toscanate.paas.turktelekom.intra
   to:
     kind: Service
     name: helloapp
