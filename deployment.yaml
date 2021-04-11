@@ -23,3 +23,23 @@ spec:
               protocol: TCP
           imagePullPolicy: IfNotPresent
       restartPolicy: Always
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: helloapp
+  namespace: helloapp-alimurat-dev
+  labels:
+    app: helloapp
+    app.kubernetes.io/component: helloapp
+    app.kubernetes.io/instance: helloapp
+    app.kubernetes.io/part-of: helloapp-app
+spec:
+  ports:
+    - name: 5000-tcp
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+  selector:
+    app: helloapp
