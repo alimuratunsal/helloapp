@@ -32,9 +32,6 @@ metadata:
   namespace: helloapp-alimurat-dev
   labels:
     app: helloapp
-    app.kubernetes.io/component: helloapp
-    app.kubernetes.io/instance: helloapp
-    app.kubernetes.io/part-of: helloapp-app
 spec:
   ports:
     - name: 5000-tcp
@@ -43,3 +40,23 @@ spec:
       targetPort: 5000
   selector:
     app: helloapp
+ ---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: helloapp-https
+  namespace: helloapp-alimurat-dev
+  labels:
+    app: helloapp
+spec:
+  host: helloapp-alimurat-dev.apps.toscanate.paas.turktelekom.intra
+  to:
+    kind: Service
+    name: helloapp
+  port:
+    targetPort: 5000-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
+
+ 
