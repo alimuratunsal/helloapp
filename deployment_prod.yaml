@@ -1,0 +1,59 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: helloapp
+  labels:
+    app: helloapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      deployment: helloapp
+  template:
+    metadata:
+      labels:
+        deployment: helloapp
+    spec:
+      containers:
+        - name: helloapp
+          image: image-registry.openshift-image-registry.svc:5000/helloapp-alimurat-prod/helloapp:0.0.7
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: helloapp
+  labels:
+    app: helloapp
+spec:
+  ports:
+    - name: 5000-tcp
+      protocol: TCP
+      port: 5000
+      targetPort: 5000
+  selector:
+    deployment: helloapp
+  type: ClusterIP
+
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: helloapp
+  labels:
+    app: helloapp
+spec:
+  to:
+    kind: Service
+    name: helloapp
+    weight: 100
+  port:
+    targetPort: 5000-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
