@@ -25,8 +25,8 @@ spec:
       restartPolicy: Always
 
 ---
-apiVersion: v1
 kind: Service
+apiVersion: v1
 metadata:
   name: helloapp
   namespace: helloapp-alimurat-dev
@@ -39,4 +39,26 @@ spec:
       port: 5000
       targetPort: 5000
   selector:
+    deployment: helloapp
+  type: ClusterIP
+
+---
+
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: helloapp
+  namespace: helloapp-alimurat-dev
+  labels:
     app: helloapp
+spec:
+  host: helloapp-helloapp-alimurat-dev.apps.toscanate.paas.turktelekom.intra
+  to:
+    kind: Service
+    name: helloapp
+    weight: 100
+  port:
+    targetPort: 5000-tcp
+  tls:
+    termination: edge
+    insecureEdgeTerminationPolicy: Allow
