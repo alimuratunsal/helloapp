@@ -1,7 +1,7 @@
 kind: Deployment
 apiVersion: apps/v1
 metadata:
-  name: helloappdeployment
+  name: Deployment
   namespace: helloapp-alimurat-dev
   labels:
     app: helloapp
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: helloapp
-          image: image-registry.openshift-image-registry.svc:5000/helloapp-alimurat-dev/helloapp
+          image: image-registry.openshift-image-registry.svc:5000/helloapp-alimurat-dev/helloapp:0.0.6
           ports:
             - containerPort: 5000
               protocol: TCP
